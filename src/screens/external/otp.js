@@ -17,30 +17,68 @@ const Otp = (props) => {
     const [otpText, setOtpText] = useState('')
     const [showCount, setShowCount] = useState(true)
     const [isResendEnable, setIsResendEnable] = useState(false)
+    const [isCodeEnter, setIsCodeEnter] = useState(true)
     const routeParams = props?.route?.params?.response
     console.log('routeParams---->', routeParams)
     const [SignUpApi] = useMutation(CREATEUSER_MUTATION)
+
     useEffect(() => {
 
         setTimeout(() => {
-            otpRef?.current?.setValue("1234");
-            setOtpText('2346')
+            // otpRef?.current?.setValue("1234");
+            // setOtpText('2346')
         }, 2000);
     }, [])
 
 
-    const onSubmitAction = async () => {
+    const onVerifyAction = async () => {
         let variables = {
             input: {
-                fullName: routeParams?.firstName,
-                perfix: routeParams?.prefix,
+                fullName: routeParams?.fullName,
+                perfix: routeParams?.perfix,
                 phone: routeParams?.phone,
                 email: routeParams?.email,
-                photo: routeParams?.profileImage,
+                photo: routeParams?.photo,
+                code: ''
 
             },
         }
-        __DEV__ && console.log('variables---->,res', variables)
+        loadingRef?.current?.show()
+        const res = await SignUpApi({
+            variables
+        }).catch(err => {
+            loadingRef?.current?.close()
+            console.log("error", err)
+        })
+
+        if (res) {
+            loadingRef?.current?.close()
+            __DEV__ && console.log('onVerifyAction---->,res', res)
+            const { data } = res
+            if (!data) {
+                errorMessage("", error, 1400)
+            } else {
+                successMessage("", 'SignUp sucessfully', 1400)
+                const { createUser } = data
+                props.navigation.navigate('NotificationEnable')
+            }
+        } else {
+            loadingRef?.current?.close()
+            errorMessage("", 'Something went wrong!', 1400)
+        }
+    }
+
+    const onResendOtpAction = async () => {
+        let variables = {
+            input: {
+                fullName: routeParams?.fullName,
+                perfix: routeParams?.perfix,
+                phone: routeParams?.phone,
+                email: routeParams?.email,
+                photo: routeParams?.photo,
+
+            },
+        }
         loadingRef?.current?.show()
         const res = await SignUpApi({
             variables
@@ -52,9 +90,9 @@ const Otp = (props) => {
             if (!data) {
                 errorMessage("", error, 1400)
             } else {
-                successMessage("", 'SignUp sucessfully', 1400)
-                const { createUser } = data
-                props.navigation.navigate('NotificationEnable')
+                setShowCount(true)
+                setIsResendEnable(false)
+                successMessage("", `Verification sent sucessfully on ${routeParams?.prefix}${routeParams?.phone}`, 1400)
             }
         } else {
             loadingRef?.current?.close()
@@ -84,9 +122,10 @@ const Otp = (props) => {
                         offTintColor={Colors.YELLOW}
                         handleTextChange={(text) => {
                             setOtpText(text)
+                            setIsCodeEnter(otpText < 4 ? false : true)
                         }}
                     />
-                    {(otpText.length < 4) &&
+                    {!isCodeEnter &&
                         <Text style={[styles.errorText, { width: '85%' }]}>{'Please provide OTP'}</Text>
                     }
                 </View>
@@ -112,8 +151,8 @@ const Otp = (props) => {
                 <SimpleButton
                     disable={!isResendEnable}
                     onPress={() => {
-                        setShowCount(true)
-                        setIsResendEnable(false)
+                        onResendOtpAction()
+
                     }}
                     buttonStyle={[styles.nextButton, { marginTop: '2%', width: wp(40), alignSelf: "center" }]}
                     titleStyle={[styles.resendbuttontitle]}
@@ -130,11 +169,10 @@ const Otp = (props) => {
                         <CircleButton
                             onPress={() => {
                                 if (otpText.length == 4) {
-                                    onSubmitAction()
+                                    onVerifyAction()
                                 } else {
-                                    errorMessage('', 'Fields are required!', 1400)
+                                    setIsCodeEnter(false)
                                 }
-
                             }}
                             buttonStyle={[styles.circleBtnBGView, { borderColor: otpText.length == 4 ? Colors.ORANGE : Colors.YELLOW, backgroundColor: otpText.length == 4 ? Colors.ORANGE : 'transparent' }]}
                         />
@@ -191,8 +229,9 @@ const styles = StyleSheet.create({
         color: Colors.WHITE,
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: Fonts.FontSize.xxxs,
-        fontFamily: Fonts.FontFamily.Regular
+        fontSize: 12,
+        fontFamily: Fonts.FontFamily.Regular,
+        fontWeight: '400'
 
     },
     otpView:

@@ -81,16 +81,9 @@ const SignUp = (props) => {
             if (!data) {
                 errorMessage("", error, 1400)
             } else {
-                successMessage("", 'Verification sent sucessfully', 1400)
+                successMessage("", `Verification sent sucessfully on ${countryCode?.split(' ')[0]}${phone}`, 1400)
                 const { createUser } = data
-                let res = {
-                    firstName: firstName,
-                    phone: phone,
-                    prefix: countryCode?.split(' ')[0],
-                    email: email,
-                    profileImage: profileImageData
-                }
-                props.navigation.navigate('Otp', { response: res })
+                props.navigation.navigate('Otp', { response: createUser })
             }
         } else {
             loadingRef?.current?.close()
