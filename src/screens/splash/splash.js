@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, Animated } from 'react-native'
+import { View, Text, Image, Dimensions, StyleSheet, Animated, ActivityIndicator } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { setAsyncStorageValue, getAsyncStorgaeValue } from '../../component'
 import { Colors, Strings, Fonts } from '../../../src/utils'
 import { splash_image, app_logo } from '../../assets'
 import Video from 'react-native-video';
 import Loading from 'react-native-whc-loading';
-var countries = require('country-data').countries
 
 const splash = ({ navigation }) => {
     const videoPlayer = useRef(null);
@@ -14,29 +13,11 @@ const splash = ({ navigation }) => {
     const [isFirstLaunch, setIsFirstLaunch] = useState(false)
     const loadingRef = useRef();
     let fadeAnimation = new Animated.Value(1);
-    useEffect(() => {
-        // let CountriesList = countries?.all?.filter((val) => val?.countryCallingCodes[0]?.length > 0)
-        //     .filter((val) => !val?.countryCallingCodes[0]?.includes('+1'))
-        //     .sort((a, b) => a?.countryCallingCodes[0] > b?.countryCallingCodes[0] ? 1 : -1)
-        //     .map((ele) => {
-        //         return {
-        //             label: `${ele?.countryCallingCodes[0]} (${ele?.alpha2})`,
-        //             value: ele?.alpha2
-        //         }
-        //     })
-        let CountriesList = countries?.all?.filter((val) => val?.countryCallingCodes[0]?.length > 0)
-            .filter((val) => !val?.countryCallingCodes[0]?.includes('+1'))
-            .sort((a, b) => a?.countryCallingCodes[0] > b?.countryCallingCodes[0] ? 1 : -1)
-            .map((ele) => `${ele?.countryCallingCodes[0]} (${ele?.alpha2})`)
-        setAsyncStorageValue(Strings.ASYNC_STORAGE_KEYS.COUNTRIES, JSON.stringify(['+44 (UK)', '+1 (US)', '+1 (CA)', ...CountriesList]))
-    }, [])
-
 
     useEffect(() => {
         Animated.timing(fadeAnimation, {
             toValue: 0,
-            duration: 2000,
-            useNativeDriver: true
+            duration: 2000
         }).start();
     }, [])
 
@@ -52,7 +33,6 @@ const splash = ({ navigation }) => {
                 }, 4000)
             } else {
                 setIsFirstLaunch(false)
-
                 setTimeout(async () => {
                     loadingRef?.current?.close()
                     navigation.replace('Initial')
@@ -105,10 +85,11 @@ const splash = ({ navigation }) => {
                             lineHeight: 24,
                             fontFamily: Fonts.FontFamily.Regular,
                             fontWeight: '800',
-                            opacity: fadeAnimation == 0 ? 0 : fadeAnimation
+                            opacity: fadeAnimation
                         }}>
                             BE THE MOVEMENT
                         </Animated.Text>
+                        <ActivityIndicator color={Colors.YELLOW} />
                     </View>
                     // <Image source={app_logo} />
                     :

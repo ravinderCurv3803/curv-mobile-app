@@ -5,7 +5,7 @@ import { Container, Icon, Button } from "native-base";
 import Loading from 'react-native-whc-loading';
 import { SimpleButton } from '../../component'
 import { Colors, Strings, Fonts } from '../../../src/utils'
-import { app_logo, bg_image } from '../../assets'
+import { app_logo, bg_image, bg } from '../../assets'
 import navigation from "../../navigation/navigation";
 import Video from 'react-native-video';
 
@@ -34,7 +34,7 @@ const Initial = (props) => {
 
     return (
         <View style={styles.mainView}>
-            <Animated.Image source={bg_image} style={[styles.mainView, {
+            <Animated.Image source={bg} style={[styles.mainView, {
                 transform: [
                     { rotate: rotateData },
                     {
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: Colors.PRIMARY_TRANSPARENT,
         flex: 1
     },
     logo_View: {
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
         bottom: hp(2)
     },
     social_textView: {
-        marginTop: hp(5),
+        marginTop: hp(7),
         color: Colors.WHITE,
         fontFamily: Fonts.FontFamily.Regular,
         fontWeight: '800',

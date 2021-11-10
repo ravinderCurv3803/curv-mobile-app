@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: Colors.PRIMARY_TRANSPARENT,
-        width: '32%'
+        width: '30%'
     },
     countryCodeText: {
         color: Colors.WHITE,

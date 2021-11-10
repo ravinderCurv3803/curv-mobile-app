@@ -19,7 +19,7 @@ const CircleButton = (props) => {
                     size={30}
                     color={Colors.WHITE}
                     onPress={() => { }}
-                /> : <Image source={btn_arrow}>
+                /> : <Image style={{ width: 14, height: 22 }} source={btn_arrow}>
                 </Image>
             }
 

@@ -5,7 +5,7 @@ import { Container, Button } from "native-base";
 import Loading from 'react-native-whc-loading';
 import { BorderedButton, CircleButton, InputField, chooseImage, Countries, errorMessage, ModalDropDown } from '../../component'
 import { Colors, Strings, Fonts } from '../../../src/utils'
-import { bg_image, user_default, down_arrow, tick } from '../../assets'
+import { bg_image, user_default, down_arrow, tick, bg } from '../../assets'
 import { Icon, Image as ImageRNE } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -71,105 +71,107 @@ const Login = (props) => {
     }
 
     return (
-        <ImageBackground source={bg_image} style={styles.mainView}>
-            <View style={styles.mainView} onStartShouldSetResponder={() => {
-                setIsScrolling(false),
-                    Keyboard.dismiss()
-            }}>
-                <View style={{ marginTop: hp(15), width: wp(90), alignSelf: 'center' }}>
-                    <Text style={styles.topText}>
-                        {Strings.LOGIN.LOGINTOP_TEXT}
-                    </Text>
-                </View>
-                <KeyboardAwareScrollView scrollEnabled={isScrolling} showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }}>
-                    <Formik
-                        enableReinitialize
-                        initialValues={{
-                            phone: phone,
-                        }}
-                        onSubmit={onSubmit}
-                        validationSchema={validationSchema}
-                    >
-                        {({ handleSubmit, handleChange, setFieldValue, setTouched, setErrors, handleBlur, values, errors, isValid, touched, isValidating }) => <View style={{ flex: 1, width: '100%', alignItems: 'center', alignSelf: 'center', width: '100%' }}>
-                            <View style={{ marginTop: wp(1), flex: 1, alignItems: 'center', alignSelf: 'center', width: '100%' }}>
-                                <View style={{ width: '85%' }}>
+        <View style={{ flex: 1, backgroundColor: Colors.PRIMARY }}>
+            <ImageBackground source={bg} style={{ flex: 1 }}>
+                <View style={styles.mainView} onStartShouldSetResponder={() => {
+                    setIsScrolling(false),
+                        Keyboard.dismiss()
+                }}>
+                    <View style={{ marginTop: hp(15), width: wp(90), alignSelf: 'center' }}>
+                        <Text style={styles.topText}>
+                            {Strings.LOGIN.LOGINTOP_TEXT}
+                        </Text>
+                    </View>
+                    <KeyboardAwareScrollView scrollEnabled={isScrolling} showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps={'handled'} contentContainerStyle={{ flex: 1 }}>
+                        <Formik
+                            enableReinitialize
+                            initialValues={{
+                                phone: phone,
+                            }}
+                            onSubmit={onSubmit}
+                            validationSchema={validationSchema}
+                        >
+                            {({ handleSubmit, handleChange, setFieldValue, setTouched, setErrors, handleBlur, values, errors, isValid, touched, isValidating }) => <View style={{ flex: 1, width: '100%', alignItems: 'center', alignSelf: 'center', width: '100%' }}>
+                                <View style={{ marginTop: wp(1), flex: 1, alignItems: 'center', alignSelf: 'center', width: '100%' }}>
+                                    <View style={{ width: '85%' }}>
 
-                                    <View style={styles.innerSubView} >
-                                        <Text style={styles.input_labelStyle}>{'Number'}</Text>
-                                        <View style={styles.numberView}>
-                                            <ModalDropDown
-                                                options={Countries}
-                                                countryCode={countryCode}
-                                                onSelect={(index, option) => {
-                                                    setCountryCode(option)
-                                                }}
-                                                isDropDownOpen={isDropDownOpen}
-                                                onDropdownWillShow={() => {
-                                                    setIsDropDownOpen(true)
-                                                }}
-                                                onDropdownWillHide={() => {
-                                                    setIsDropDownOpen(false)
-                                                }} />
-                                            <View style={{ height: hp(5), width: '55%' }}>
-                                                <InputField
-                                                    editable={true}
-                                                    defaultValue={values.phone}
-                                                    inputStyleProp={[styles.input, {
-                                                        borderBottomWidth: wp(.5),
-                                                        borderColor: Colors.YELLOW, height: hp(4.2),
-                                                    }]}
-                                                    inputTextStyleProp={[styles.inputtext, {
-                                                        borderBottomWidth: 0, height: hp(4),
-                                                        borderColor: Colors.YELLOW
-                                                    }]}
-                                                    onChangeText={(text) => {
-                                                        setFirstRender(false)
-                                                        setFieldValue('phone', text)
+                                        <View style={styles.innerSubView} >
+                                            <Text style={styles.input_labelStyle}>{'Number'}</Text>
+                                            <View style={styles.numberView}>
+                                                <ModalDropDown
+                                                    options={Countries}
+                                                    countryCode={countryCode}
+                                                    onSelect={(index, option) => {
+                                                        setCountryCode(option)
                                                     }}
-                                                    keyboardType={'phone-pad'}
-                                                    maxLength={10}
-                                                    onBlur={
-                                                        handleBlur('phone')
+                                                    isDropDownOpen={isDropDownOpen}
+                                                    onDropdownWillShow={() => {
+                                                        setIsDropDownOpen(true)
+                                                    }}
+                                                    onDropdownWillHide={() => {
+                                                        setIsDropDownOpen(false)
+                                                    }} />
+                                                <View style={{ height: hp(5), width: '55%' }}>
+                                                    <InputField
+                                                        editable={true}
+                                                        defaultValue={values.phone}
+                                                        inputStyleProp={[styles.input, {
+                                                            borderBottomWidth: wp(.5),
+                                                            borderColor: Colors.YELLOW, height: hp(4.2),
+                                                        }]}
+                                                        inputTextStyleProp={[styles.inputtext, {
+                                                            borderBottomWidth: 0, height: hp(4),
+                                                            borderColor: Colors.YELLOW
+                                                        }]}
+                                                        onChangeText={(text) => {
+                                                            setFirstRender(false)
+                                                            setFieldValue('phone', text)
+                                                        }}
+                                                        keyboardType={'phone-pad'}
+                                                        maxLength={10}
+                                                        onBlur={
+                                                            handleBlur('phone')
 
+                                                        }
+                                                        onFocus={() => setIsScrolling(true)}
+                                                    />
+                                                    {(errors.phone && touched.phone) &&
+                                                        <Text style={[styles.errorText, { width: '100%', }]}>{errors.phone}</Text>
                                                     }
-                                                    onFocus={() => setIsScrolling(true)}
-                                                />
-                                                {(errors.phone && touched.phone) &&
-                                                    <Text style={[styles.errorText, { width: '100%', }]}>{errors.phone}</Text>
-                                                }
+                                                </View>
                                             </View>
                                         </View>
-                                    </View>
 
+                                    </View>
+                                </View>
+                                <View style={[styles.buttonView]}>
+                                    <View style={styles.logo_View}>
+                                        <CircleButton
+                                            onPress={!isFirstRender && isValid ? handleSubmit : () => {
+                                                console.log('isValid--->', isValid, isFirstRender)
+                                                setErrors({
+                                                    phone: 'Provide Your Mobile Number.',
+                                                })
+                                                setTouched({
+                                                    phone: values.phone.length > 0 ? false : true,
+                                                })
+                                            }}
+                                            // onPress={() => {
+                                            //     props.navigation.navigate('Otp')
+                                            // }}
+                                            buttonStyle={{ marginTop: '2%', alignSelf: "center", borderColor: !isFirstRender && isValid ? Colors.ORANGE : Colors.YELLOW, backgroundColor: !isFirstRender && isValid ? Colors.ORANGE : 'transparent' }}
+                                        />
+                                    </View>
                                 </View>
                             </View>
-                            <View style={[styles.buttonView]}>
-                                <View style={styles.logo_View}>
-                                    <CircleButton
-                                        onPress={!isFirstRender && isValid ? handleSubmit : () => {
-                                            console.log('isValid--->', isValid, isFirstRender)
-                                            setErrors({
-                                                phone: 'Provide Your Mobile Number.',
-                                            })
-                                            setTouched({
-                                                phone: values.phone.length > 0 ? false : true,
-                                            })
-                                        }}
-                                        // onPress={() => {
-                                        //     props.navigation.navigate('Otp')
-                                        // }}
-                                        buttonStyle={{ marginTop: '2%', alignSelf: "center", borderColor: !isFirstRender && isValid ? Colors.ORANGE : Colors.YELLOW, backgroundColor: !isFirstRender && isValid ? Colors.ORANGE : 'transparent' }}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                        }
-                    </Formik>
-                </KeyboardAwareScrollView>
-            </View>
-            <Loading ref={loadingRef} backgroundColor='transparent' indicatorColor={Colors.YELLOW} easing={Loading.EasingType.ease} />
-        </ImageBackground >
+                            }
+                        </Formik>
+                    </KeyboardAwareScrollView>
+                </View>
+                <Loading ref={loadingRef} backgroundColor='transparent' indicatorColor={Colors.YELLOW} easing={Loading.EasingType.ease} />
+            </ImageBackground >
+        </View>
     );
 };
 
@@ -181,7 +183,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     mainView: {
-        backgroundColor: Colors.PRIMARY_TRANSPARENT,
         flex: 1,
     },
     logo_View: {

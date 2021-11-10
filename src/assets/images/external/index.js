@@ -1,6 +1,7 @@
 export const app_logo = require('./app_logo.png')
 export const splash_image = require('./splash_image.png')
 export const bg_image = require('./bg_image.png')
+export const bg = require('./bg.png')
 export const btn_arrow = require('./btn_arrow.png')
 export const user_default = require('./user_default.png')
 export const down_arrow = require('./down_arrow.png')

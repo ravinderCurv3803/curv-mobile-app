@@ -13,7 +13,7 @@ export const ToastConfig = {
         letterSpacing: .7
       }}
       text2Style={{
-        fontFamily: Fonts.FontFamily.regular,
+        fontFamily: Fonts.FontFamily.Regular,
         fontSize: 13
       }}
       text1={text1}
@@ -22,7 +22,7 @@ export const ToastConfig = {
         borderLeftColor: Colors.GREEN,
       }}
       contentContainerStyle={{
-        paddingLeft: '5%'
+        paddingLeft: '5%',
       }}
       {...props}
     />
@@ -36,7 +36,7 @@ export const ToastConfig = {
         letterSpacing: .7
       }}
       text2Style={{
-        fontFamily: Fonts.FontFamily.regular,
+        fontFamily: Fonts.FontFamily.Regular,
         fontSize: 13
       }}
       text1={text1}
@@ -59,7 +59,7 @@ export const ToastConfig = {
         letterSpacing: .7
       }}
       text2Style={{
-        fontFamily: Fonts.FontFamily.regular,
+        fontFamily: Fonts.FontFamily.Regular,
         fontSize: 13
       }}
       text1={text1}

@@ -5,7 +5,7 @@ import { Container, Button } from "native-base";
 import Loading from 'react-native-whc-loading';
 import { SimpleButton, CircleButton, InputField, chooseImage, Countries, errorMessage, successMessage, } from '../../component'
 import { Colors, Strings, Fonts } from '../../../src/utils'
-import { bg_image, user_default, down_arrow, tick } from '../../assets'
+import { bg_image, user_default, down_arrow, tick, bg } from '../../assets'
 import OTPTextInput from 'react-native-otp-textinput';
 import CountDown from 'react-native-countdown-component';
 import { CREATEUSER_MUTATION, LOGIN_MUTATION } from '../../component/apis/GraphQL/Mutations';
@@ -101,86 +101,88 @@ const Otp = (props) => {
     }
 
     return (
-        <ImageBackground source={bg_image} style={styles.mainView}>
-            <View style={styles.mainView} onStartShouldSetResponder={() => Keyboard.dismiss()}>
-                <View style={{ marginTop: hp(10), width: wp(90), alignSelf: 'center' }}>
-                    <Text style={styles.topText}>
-                        {Strings.OTP.TOP_TEXT}
-                    </Text>
-                </View>
-                <View style={styles.otpView}>
-                    <OTPTextInput ref={otpRef}
-                        containerStyle={{ alignSelf: 'center' }}
-                        textInputStyle={{
-                            color: Colors.WHITE, fontFamily: Fonts.FontFamily.Regular, fontWeight: '700', fontSize: 35, height: 50,
-                            width: 50,
-                            borderBottomWidth: 2,
-                            textAlign: 'center',
-                        }}
-                        defaultValue={otpText}
-                        tintColor={Colors.YELLOW}
-                        offTintColor={Colors.YELLOW}
-                        handleTextChange={(text) => {
-                            setOtpText(text)
-                            setIsCodeEnter(otpText < 4 ? false : true)
-                        }}
-                    />
-                    {!isCodeEnter &&
-                        <Text style={[styles.errorText, { width: '85%' }]}>{'Please provide OTP'}</Text>
-                    }
-                </View>
-                <View style={{ marginTop: '1%', justifyContent: 'center', alignContent: 'center' }}>
-                    {showCount ?
-                        <CountDown
-                            size={15}
-                            until={120}
-                            onFinish={() => {
-                                setShowCount(false)
-                                setIsResendEnable(true)
+        <View style={{ flex: 1, backgroundColor: Colors.PRIMARY }}>
+            <ImageBackground source={bg} style={styles.mainView}>
+                <View style={styles.mainView} onStartShouldSetResponder={() => Keyboard.dismiss()}>
+                    <View style={{ marginTop: hp(10), width: wp(90), alignSelf: 'center' }}>
+                        <Text style={styles.topText}>
+                            {Strings.OTP.TOP_TEXT}
+                        </Text>
+                    </View>
+                    <View style={styles.otpView}>
+                        <OTPTextInput ref={otpRef}
+                            containerStyle={{ alignSelf: 'center' }}
+                            textInputStyle={{
+                                color: Colors.WHITE, fontFamily: Fonts.FontFamily.Regular, fontWeight: '700', fontSize: 35, height: 50,
+                                width: 50,
+                                borderBottomWidth: 2,
+                                textAlign: 'center',
                             }}
-                            digitStyle={{ backgroundColor: 'transparent', fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
-                            digitTxtStyle={{ color: Colors.WHITE, fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
-                            timeLabelStyle={{ color: 'red', fontWeight: 'normal', fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
-                            separatorStyle={{ color: Colors.WHITE }}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{ m: null, s: null }}
-                            showSeparator
-                        /> : null
-                    }
-                </View>
-                <SimpleButton
-                    disable={!isResendEnable}
-                    onPress={() => {
-                        onResendOtpAction()
-
-                    }}
-                    buttonStyle={[styles.nextButton, { marginTop: '2%', width: wp(40), alignSelf: "center" }]}
-                    titleStyle={[styles.resendbuttontitle]}
-                    title={Strings.OTP.RESENDTEXT}
-                />
-                <SimpleButton
-                    onPress={() => { props.navigation.goBack() }}
-                    buttonStyle={[styles.nextButton, { marginTop: '5%', width: wp(40), alignSelf: "center" }]}
-                    titleStyle={[styles.backbuttontitle]}
-                    title={Strings.OTP.GOBACK}
-                />
-                <View style={styles.buttonView}>
-                    <View style={styles.circleBtn_View}>
-                        <CircleButton
-                            onPress={() => {
-                                if (otpText.length == 4) {
-                                    onVerifyAction()
-                                } else {
-                                    setIsCodeEnter(false)
-                                }
+                            defaultValue={otpText}
+                            tintColor={Colors.YELLOW}
+                            offTintColor={Colors.YELLOW}
+                            handleTextChange={(text) => {
+                                setOtpText(text)
+                                setIsCodeEnter(otpText < 4 ? false : true)
                             }}
-                            buttonStyle={[styles.circleBtnBGView, { borderColor: otpText.length == 4 ? Colors.ORANGE : Colors.YELLOW, backgroundColor: otpText.length == 4 ? Colors.ORANGE : 'transparent' }]}
                         />
+                        {!isCodeEnter &&
+                            <Text style={[styles.errorText, { width: '85%' }]}>{'Please provide OTP'}</Text>
+                        }
+                    </View>
+                    <View style={{ marginTop: '1%', justifyContent: 'center', alignContent: 'center' }}>
+                        {showCount ?
+                            <CountDown
+                                size={15}
+                                until={120}
+                                onFinish={() => {
+                                    setShowCount(false)
+                                    setIsResendEnable(true)
+                                }}
+                                digitStyle={{ backgroundColor: 'transparent', fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
+                                digitTxtStyle={{ color: Colors.WHITE, fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
+                                timeLabelStyle={{ color: 'red', fontWeight: 'normal', fontWeight: '400', fontFamily: Fonts.FontFamily.Regular, fontSize: 12 }}
+                                separatorStyle={{ color: Colors.WHITE }}
+                                timeToShow={['M', 'S']}
+                                timeLabels={{ m: null, s: null }}
+                                showSeparator
+                            /> : null
+                        }
+                    </View>
+                    <SimpleButton
+                        disable={!isResendEnable}
+                        onPress={() => {
+                            onResendOtpAction()
+
+                        }}
+                        buttonStyle={[styles.nextButton, { marginTop: '2%', width: wp(40), alignSelf: "center" }]}
+                        titleStyle={[styles.resendbuttontitle]}
+                        title={Strings.OTP.RESENDTEXT}
+                    />
+                    <SimpleButton
+                        onPress={() => { props.navigation.goBack() }}
+                        buttonStyle={[styles.nextButton, { marginTop: '5%', width: wp(40), alignSelf: "center" }]}
+                        titleStyle={[styles.backbuttontitle]}
+                        title={Strings.OTP.GOBACK}
+                    />
+                    <View style={styles.buttonView}>
+                        <View style={styles.circleBtn_View}>
+                            <CircleButton
+                                onPress={() => {
+                                    if (otpText.length == 4) {
+                                        onVerifyAction()
+                                    } else {
+                                        setIsCodeEnter(false)
+                                    }
+                                }}
+                                buttonStyle={[styles.circleBtnBGView, { borderColor: otpText.length == 4 ? Colors.ORANGE : Colors.YELLOW, backgroundColor: otpText.length == 4 ? Colors.ORANGE : 'transparent' }]}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
-            <Loading ref={loadingRef} backgroundColor='transparent' indicatorColor={Colors.YELLOW} easing={Loading.EasingType.ease} />
-        </ImageBackground >
+                <Loading ref={loadingRef} backgroundColor='transparent' indicatorColor={Colors.YELLOW} easing={Loading.EasingType.ease} />
+            </ImageBackground >
+        </View>
     );
 };
 
@@ -192,7 +194,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     mainView: {
-        backgroundColor: Colors.PRIMARY_TRANSPARENT,
         flex: 1,
     },
     circleBtn_View: {
